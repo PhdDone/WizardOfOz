@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="static/js/script.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h3>Task <i id="taskId">{{ taskId }}</i>: FoodType: <i>{{ foodType }}</i>. PriceRange: <i>{{ priceRange }}</i>. Address: <i> {{ address }}</i>
+        You are looking for <i>{{ lookingFor }}</i></h3>
+    {% for item in sents %}
+        <p>{{ item }}</p>
+    {% endfor %}
+
+   <form>
+        <div class="form-group">
+            <label for="userResponse">Your Response:</label>
+            <textarea class="form-control" id="userResponse" rows="3"></textarea>
+        </div>
+        <button type="submit" id="userSubmit" class="btn btn-primary" onclick="submitUserResponse()">Submit</button>
+    </form>
+</body>
+</html>

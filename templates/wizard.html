@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="static/js/script.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h3>Task: <i>02004</i>: </h3>
+    {% for item in sents %}
+    <p>{{ item }}</p>
+    {% endfor %}
+
+    <h4>Please modify the following answers based on the latest customer response:</h4>
+
+    <form>
+        <h5>What does the user want?</h5>
+        <div class="form-group">
+            <label for="area">VenueName</label>
+            <input type="text" class="form-control" id="venueName" placeholder="venueName">
+            <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
+        </div>
+        <div class="form-group">
+            <label for="foodType">Food Type</label>
+            <input type="text" class="form-control" id="foodType" aria-describedby="foodTypeHelp"
+                   placeholder="Food Type">
+            <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
+            <!-- <small id="foodTypeHelp" class="form-text text-muted">Please give reasonable answers.</small> -->
+        </div>
+        <div class="form-group">
+            <label for="area">Area</label>
+            <input type="text" class="form-control" id="area" placeholder="Area">
+            <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
+        </div>
+        <div class="form-group">
+            <label for="priceRange">Price Range</label>
+            <input type="text" class="form-control" id="priceRange" placeholder="Price Range">
+            <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
+        </div>
+
+        <h5>What does the user ask?</h5>
+        <div class="form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="">
+                Is the user asking for <b>foodType<b> of an offered venue?
+            </label>
+        </div>
+
+        <div class="form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="">
+                Is the user asking for <b>priceRange</b> of an offered venue?
+            </label>
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="searchDB()">SearchDB</button>
+    </form>
+
+    <form>
+        <div class="form-group">
+            <label for="userResponse">Your Response:</label>
+            <textarea class="form-control" id="userResponse" rows="3"></textarea>
+        </div>
+        <button type="submit" id="userSubmit" class="btn btn-primary" onclick="submitUserResponse()">Submit</button>
+    </form>
+
+    <div>
+        <p></p>
+        <table id="added-articles" class="table">
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+            </tr>
+        </table>
+    </div>
+
+
+</body>
+</html>
