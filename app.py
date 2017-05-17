@@ -1,5 +1,6 @@
 import os
 from flask import Flask,render_template, request,json
+import logging
 
 app = Flask(__name__)
 
@@ -51,4 +52,5 @@ def newWizardTask():
     global sents2
     return render_template('wizard.html', taskId=taskId, sents = sents2)
 if __name__=="__main__":
-    app.run()
+    logging.basicConfig(filename='app.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+    app.run(host='0.0.0.0', port=9005, debug=True)
