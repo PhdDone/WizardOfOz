@@ -12,7 +12,7 @@
 <body>
 
 <div class="container">
-    <h3>Task: <i>02004</i>: </h3>
+    <h3>Task <i id="taskId">{{ taskId }}</i>
     {% for item in sents %}
     <p>{{ item }}</p>
     {% endfor %}
@@ -22,7 +22,7 @@
     <form>
         <h5>What does the user want?</h5>
         <div class="form-group">
-            <label for="area">VenueName</label>
+            <label for="venueName">Venue name</label>
             <input type="text" class="form-control" id="venueName" placeholder="venueName">
             <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
         </div>
@@ -33,7 +33,7 @@
             <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
             <!-- <small id="foodTypeHelp" class="form-text text-muted">Please give reasonable answers.</small> -->
         </div>
-        <div class="form-group">
+        <!--<div class="form-group">
             <label for="area">Area</label>
             <input type="text" class="form-control" id="area" placeholder="Area">
             <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
@@ -42,7 +42,7 @@
             <label for="priceRange">Price Range</label>
             <input type="text" class="form-control" id="priceRange" placeholder="Price Range">
             <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
-        </div>
+        </div> -->
 
         <h5>What does the user ask?</h5>
         <div class="form-check">
@@ -64,10 +64,10 @@
 
     <form>
         <div class="form-group">
-            <label for="userResponse">Your Response:</label>
-            <textarea class="form-control" id="userResponse" rows="3"></textarea>
+            <label for="wizardResponse">Your Response:</label>
+            <textarea class="form-control" id="wizardResponse" rows="3"></textarea>
         </div>
-        <button type="submit" id="userSubmit" class="btn btn-primary" onclick="submitUserResponse()">Submit</button>
+        <button type="submit" id="wizardSubmit" class="btn btn-primary" onclick="submitWizardResponse()">Submit</button>
     </form>
 
     <div>

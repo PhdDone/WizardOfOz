@@ -47,6 +47,86 @@
        };
 
 function searchDB() {
+ 		var venueName = $('#venueName').val();
+ 		var foodType = $('#foodType').val();
+ 		console.log(venueName)
+ 		console.log(foodType)
+    	$.ajax({
+          type: 'POST',
+          url: "/searchDB",
+          data: JSON.stringify({
+            "venueName": venueName,
+            "foodType": foodType
+          }),
+          error: function(e) {
+            console.log(e);
+          },
+          dataType: "json",
+          contentType: "application/json",
+          success: function(response){
+          $("tr:has(td)").remove();
+
+          // 2. get each article
+          console.log(response)
+          $.each(response, function (index, article) {
+
+              // 2.2 Create table column for categories
+              var td_categories = $("<td/>");
+
+              // 2.3 get each category of this article
+              /*$.each(article.categories, function (i, category) {
+                  var span = $("<span/>");
+                  span.text(category);
+                  td_categories.append(span);
+              });*/
+
+              // 2.4 Create table column for tags
+             var td_tags = $("<td/>");
+
+              // 2.5 get each tag of this article
+              $.each(response.tags, function (i, tag) {
+                  var span = $("<span/>");
+                  span.text(tag);
+                  td_tags.append(span);
+              });
+              var venueName = '<td> ' + article.venueName + '</td>'
+              var address = '<td> ' + article.address + '</td>'
+          	$('#added-articles').append( '<tr>' + venueName + address + '</tr>')
+              // 2.6 Create a new row and append 3 columns (title+url, categories, tags)
+              /*$("#added-articles").append($('<tr/>')
+                      .append($('<td/>').html("<a href='"+article.url+"'>"+article.title+"</a>"))
+                      .append(td_categories)
+                      .append(td_tags)
+              );*/
+          });
+
+              			}
+        });
+       };
+
+ function submitWizardResponse() {
+ 		var taskId = $('#taskId').text();
+ 		var wizardResponse = $('#wizardResponse').val();
+    	$.ajax({
+          type: 'POST',
+          url: "/wizardUpdateTask",
+          data: JSON.stringify({
+            "taskId": taskId,
+            "wizardResponse": wizardResponse
+          }),
+          error: function(e) {
+            console.log(e);
+          },
+          dataType: "json",
+          contentType: "application/json",
+          success: function(response){
+              				alert(JSON.stringify(response))
+              				console.log(response);
+              			}
+        });
+       };
+
+function searchDB2() {
  console.log("test")
 
      // JSON Data
@@ -63,38 +143,5 @@ var articles = [
     }
 ];
 // 1. remove all existing rows
-$("tr:has(td)").remove();
 
-// 2. get each article
-$.each(articles, function (index, article) {
-
-    // 2.2 Create table column for categories
-    var td_categories = $("<td/>");
-
-    // 2.3 get each category of this article
-    /*$.each(article.categories, function (i, category) {
-        var span = $("<span/>");
-        span.text(category);
-        td_categories.append(span);
-    });*/
-
-    // 2.4 Create table column for tags
-   var td_tags = $("<td/>");
-
-    // 2.5 get each tag of this article
-    $.each(article.tags, function (i, tag) {
-        var span = $("<span/>");
-        span.text(tag);
-        td_tags.append(span);
-    });
-    var venueName = '<td> ' + article.venue + '</td>'
-    var address = '<td> ' + article.address + '</td>'
-	$('#added-articles').append( '<tr>' + venueName + address + '</tr>')
-    // 2.6 Create a new row and append 3 columns (title+url, categories, tags)
-    /*$("#added-articles").append($('<tr/>')
-            .append($('<td/>').html("<a href='"+article.url+"'>"+article.title+"</a>"))
-            .append(td_categories)
-            .append(td_tags)
-    );*/
-});
 }
