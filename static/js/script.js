@@ -23,16 +23,20 @@
     		});
     	}
     	*/
+ var wizardClickedFinish = false
+
  function submitUserResponse() {
  		var taskId = $('#taskId').text();
  		var userResponse = $('#userResponse').val();
+ 		var end = $('#endOfDialogue').prop('checked');
+ 		console.log(end)
     	$.ajax({
           type: 'POST',
           url: "/userUpdateTask",
           data: JSON.stringify({
-            "taskId": taskId,
-            "userResponse": userResponse,
-            "sampleSize" : 10
+            "task_id": taskId,
+            "user_response": userResponse,
+            "end": end
           }),
           error: function(e) {
             console.log(e);
@@ -47,16 +51,39 @@
        };
 
 function searchDB() {
- 		var venueName = $('#venueName').val();
+ 		wizardClickedFinish = true
+ 		console.log("searchdb")
+ 		console.log(wizardClickedFinish)
+		var taskId = $('#taskId').text();
+		var name = $('#name').val();
+ 		var area = $('#area').val();
  		var foodType = $('#foodType').val();
- 		console.log(venueName)
+ 		var lowerBound = $('#priceRangeLowerBound').val();
+ 		var upperBound = $('#priceRangeUpperBound').val();
+
+ 		var askArea = $('#askArea').prop('checked')
+ 		var askFoodType = $('#askFoodType').prop('checked')
+ 		var askPrice = $('#askPrice').prop('checked')
+		var askScore = $('#askScore').prop('checked')
+
+ 		console.log(area)
  		console.log(foodType)
+ 		console.log(askArea)
+
     	$.ajax({
           type: 'POST',
           url: "/searchDB",
           data: JSON.stringify({
-            "venueName": venueName,
-            "foodType": foodType
+          	"task_id": taskId,
+          	"name": name,
+            "area": area,
+            "food_type": foodType,
+            "lower_bound": lowerBound,
+            "upper_bound": upperBound,
+            "ds_asking_area": askArea,
+            "ds_asking_food_type": askFoodType,
+            "ds_asking_price": askPrice,
+            "ds_asking_score": askScore
           }),
           error: function(e) {
             console.log(e);
@@ -68,8 +95,7 @@ function searchDB() {
 
           // 2. get each article
           console.log(response)
-          $.each(response, function (index, article) {
-
+          $.each(response, function (index, restaurant) {
               // 2.2 Create table column for categories
               var td_categories = $("<td/>");
 
@@ -89,9 +115,12 @@ function searchDB() {
                   span.text(tag);
                   td_tags.append(span);
               });
-              var venueName = '<td> ' + article.venueName + '</td>'
-              var address = '<td> ' + article.address + '</td>'
-          	$('#added-articles').append( '<tr>' + venueName + address + '</tr>')
+              var venueName = '<td> ' + restaurant.name + '</td>'
+              var address = '<td> ' + restaurant.address + '</td>'
+              var price = '<td>' + restaurant.price + '</td>'
+              var score = '<td>' + restaurant.score + '</td>'
+
+          	$('#added-articles').append( '<tr>' + venueName + address + price + score + '</tr>')
               // 2.6 Create a new row and append 3 columns (title+url, categories, tags)
               /*$("#added-articles").append($('<tr/>')
                       .append($('<td/>').html("<a href='"+article.url+"'>"+article.title+"</a>"))
@@ -105,17 +134,22 @@ function searchDB() {
        };
 
  function submitWizardResponse() {
+        console.log(wizardClickedFinish)
  		var taskId = $('#taskId').text();
  		var wizardResponse = $('#wizardResponse').val();
+ 		var end = $('#endOfDialogue').prop('checked')
+		wizardClickedFinish = false
     	$.ajax({
           type: 'POST',
           url: "/wizardUpdateTask",
           data: JSON.stringify({
-            "taskId": taskId,
-            "wizardResponse": wizardResponse
+            "task_id": taskId,
+            "wizard_response": wizardResponse,
+            "end": end
           }),
           error: function(e) {
-            console.log(e);
+            alert(JSON.stringify(e))
+            console.log(e)
           },
           dataType: "json",
           contentType: "application/json",
@@ -126,22 +160,9 @@ function searchDB() {
         });
        };
 
-function searchDB2() {
- console.log("test")
-
-     // JSON Data
-var articles = [
-    {
-        "venue":"Cheng Du Xiao che",
-        "address":"Zhong guan cun",
-        "phone":["110"],
-        "tags":["jquery","json","$.each"]
-    },
-    {
-        "venue":"Sha Xian xiao chi",
-        "address": "da heng",
-    }
-];
-// 1. remove all existing rows
-
-}
+  function validWizardClickedFinish() {
+     if (wizardClickedFinish) {
+     return true
+     }
+     return false
+  }

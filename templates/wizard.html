@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Bootstrap Example</title>
+    <title>Wizard Example</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -12,72 +12,289 @@
 <body>
 
 <div class="container">
-    <h3>Task <i id="taskId">{{ taskId }}</i>
-    {% for item in sents %}
-    <p>{{ item }}</p>
-    {% endfor %}
-
-    <h4>Please modify the following answers based on the latest customer response:</h4>
-
-    <form>
-        <h5>What does the user want?</h5>
-        <div class="form-group">
-            <label for="venueName">Venue name</label>
-            <input type="text" class="form-control" id="venueName" placeholder="venueName">
-            <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
-        </div>
-        <div class="form-group">
-            <label for="foodType">Food Type</label>
-            <input type="text" class="form-control" id="foodType" aria-describedby="foodTypeHelp"
-                   placeholder="Food Type">
-            <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
-            <!-- <small id="foodTypeHelp" class="form-text text-muted">Please give reasonable answers.</small> -->
-        </div>
-        <!--<div class="form-group">
-            <label for="area">Area</label>
-            <input type="text" class="form-control" id="area" placeholder="Area">
-            <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
-        </div>
-        <div class="form-group">
-            <label for="priceRange">Price Range</label>
-            <input type="text" class="form-control" id="priceRange" placeholder="Price Range">
-            <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
-        </div> -->
-
-        <h5>What does the user ask?</h5>
-        <div class="form-check">
-            <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" value="">
-                Is the user asking for <b>foodType<b> of an offered venue?
-            </label>
-        </div>
-
-        <div class="form-check">
-            <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" value="">
-                Is the user asking for <b>priceRange</b> of an offered venue?
-            </label>
-        </div>
-
-        <button type="button" class="btn btn-primary" onclick="searchDB()">SearchDB</button>
-    </form>
-
-    <form>
-        <div class="form-group">
-            <label for="wizardResponse">Your Response:</label>
-            <textarea class="form-control" id="wizardResponse" rows="3"></textarea>
-        </div>
-        <button type="submit" id="wizardSubmit" class="btn btn-primary" onclick="submitWizardResponse()">Submit</button>
-    </form>
 
     <div>
+        <h3>标注说明:</h3>
+        <ul>
+            <li>一次<font color="red">不能</font>同时回复多个餐馆的实体。</li>
+            <li>如果数据库没有搜索结果或者有多个结果，您可以选择要求用户改变搜索条件。</li>
+            <li>在标注区域时用正规化后的数据，如果用户说“中关村附近”，只填“中关村”。</li>
+        </ul>
+    </div>
+
+    <h3>Task <i id="taskId">{{ taskId }}</i> </h3>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {% for item in sents %}
+            <p>{{ item }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h4>第一步：请根据用户回答填写或更新以下对话状态，点击更新按钮之后，系统会根据对话状态帮您搜索数据库，并在页面底部展示结果。</h4>
+
+            <form>
+                <!-- <h5>What does the user want?</h5> -->
+                <!--
+                    <div class="form-group">
+                    <label for="">用户想选什么区域的餐馆</label>
+                    <select class="form-control" id="foodType">
+                        <option>没提到</option>
+                        <option>昌平镇</option>
+                        <option>石佛营</option>
+                        <option>西直门/动物园</option>
+                        <option>百子湾</option>
+                        <option>学院桥</option>
+                        <option>王府井/东单</option>
+                        <option>大钟寺</option>
+                        <option>亚运村</option>
+                        <option>回龙观</option>
+                        <option>东直门</option>
+                        <option>海淀其它</option>
+                        <option>国贸</option>
+                        <option>十里堡</option>
+                        <option>亮马桥/三元桥</option>
+                        <option>马驹桥</option>
+                        <option>复兴门</option>
+                        <option>开阳里</option>
+                        <option>崇文门</option>
+                        <option>高碑店</option>
+                        <option>慈云寺/八里庄</option>
+                        <option>六里桥/丽泽桥</option>
+                        <option>右安门</option>
+                        <option>万柳</option>
+                        <option>管庄</option>
+                        <option>南锣鼓巷/鼓楼东大街</option>
+                        <option>朝阳其它</option>
+                        <option>甜水园</option>
+                        <option>酒仙桥</option>
+                        <option>上地</option>
+                        <option>小庄/红庙</option>
+                        <option>花乡</option>
+                        <option>建国门/北京站</option>
+                        <option>知春路</option>
+                        <option>四惠</option>
+                        <option>双榆树</option>
+                        <option>北苑家园</option>
+                        <option>北太平庄</option>
+                        <option>北沙滩</option>
+                        <option>望京</option>
+                        <option>马泉营</option>
+                        <option>劲松/潘家园</option>
+                        <option>左家庄</option>
+                        <option>新街口</option>
+                        <option>宣武门</option>
+                        <option>广外大街</option>
+                        <option>朝阳公园/团结湖</option>
+                        <option>首都机场</option>
+                        <option>前门</option>
+                        <option>中关村</option>
+                        <option>十八里店</option>
+                        <option>朝阳门</option>
+                        <option>魏公村</option>
+                        <option>航天桥</option>
+                        <option>朝阳区</option>
+                        <option>海淀区</option>
+                        <option>方庄</option>
+                        <option>新华大街</option>
+                        <option>颐和园</option>
+                        <option>太阳宫</option>
+                        <option>工人体育场</option>
+                        <option>798/大山子</option>
+                        <option>什刹海</option>
+                        <option>通州北苑</option>
+                        <option>东四十条</option>
+                        <option>西四</option>
+                        <option>五棵松</option>
+                        <option>大望路</option>
+                        <option>三里屯</option>
+                        <option>西单</option>
+                        <option>紫竹桥</option>
+                        <option>五道口</option>
+                        <option>双井</option>
+                        <option>亦庄</option>
+                        <option>丽泽桥/丰管路</option>
+                        <option>鲁谷</option>
+                        <option>公主坟/万寿路</option>
+                        <option>东四</option>
+                        <option>蓝色港湾</option>
+                        <option>朝外大街</option>
+                        <option>青年路</option>
+                        <option>建外大街</option>
+                        <option>苏州桥</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="">用户选择什么菜系</label>
+                    <select class="form-control" id="foodType">
+                        <option>没提到</option>
+                        <option>日本菜</option>
+                        <option>火锅</option>
+                        <option>川菜</option>
+                        <option>家常菜</option>
+                        <option>烧烤</option>
+                        <option>自助餐</option>
+                        <option>西餐</option>
+                        <option>贵州菜</option>
+                        <option>新疆菜</option>
+                        <option>创意菜</option>
+                        <option>湖北菜</option>
+                        <option>西北菜</option>
+                        <option>茶馆</option>
+                        <option>婚礼小商品</option>
+                        <option>徽菜</option>
+                        <option>咖啡厅</option>
+                        <option>粤菜</option>
+                        <option>云南菜</option>
+                        <option>清真菜</option>
+                        <option>其他</option>
+                        <option>小吃快餐</option>
+                        <option>海鲜</option>
+                        <option>素菜</option>
+                        <option>鲁菜</option>
+                        <option>俄罗斯菜</option>
+                        <option>江浙菜</option>
+                        <option>台湾菜</option>
+                        <option>湘菜</option>
+                        <option>东南亚菜</option>
+                        <option>面包甜点</option>
+                        <option>韩国料理</option>
+                        <option>北京菜</option>
+                        <option>私房菜</option>
+                        <option>粉面馆</option>
+                        <option>酒吧</option>
+                        <option>DIY手工坊</option>
+                        <option>东北菜</option>
+                    </select>
+                </div>
+                -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            用户已经提供了什么信息?
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                <div class="form-group">
+                    <label for="foodType">用户选择什么菜系：</label>
+                    <input type="text" class="form-control" id="foodType" aria-describedby="foodTypeHelp"
+                           value={{ prevFoodType.decode('utf-8') }}>
+                    <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="area">用户选择什么区域就餐：</label>
+                    <input type="text" class="form-control" id="area" value={{ prevAreaName.decode('utf-8') }}>
+                    <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
+                </div>
+                <div class="form-group">
+                    <label for="priceRangeLowerBound">用户想要什么价位：</label>
+                    下限： <input type="text" class="form-control" id="priceRangeLowerBound" aria-describedby="priceRangeHelp"
+                               value={{ prevLowerBound }}>
+                    上限：<input type="text" class="form-control" id="priceRangeUpperBound" aria-describedby="priceRangeHelp"
+                              value={{ prevUpperBound }}>
+                    <small id="foodTypeHelp" class="form-text text-muted">例子: 35元左右->下限30，上40; 低于50元->上限50，下限0; 高于100元->上线0，下限100</small>
+                </div>
+
+
+                <!--<div class="form-group">
+                    <label for="area">Area</label>
+                    <input type="text" class="form-control" id="area" placeholder="Area">
+                    <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
+                </div>
+                <div class="form-group">
+                    <label for="priceRange">Price Range</label>
+                    <input type="text" class="form-control" id="priceRange" placeholder="Price Range">
+                    <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
+                </div> -->
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            用户<b>这一轮</b>询问了什么信息?
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+
+                <!-- <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" value="" id="askFoodType">
+                        用户询问了餐厅的<b>菜系</b>?
+                    </label>
+                </div> -->
+
+                        <div class="form-group">
+                            <label for="name">系统和用户<b>这一轮</b>正在讨论的餐馆的名称：</label>
+                            <input type="text" class="form-control" id="name" aria-describedby="nameHelp"
+                                   placeholder="餐馆名称">
+                            <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
+                        </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" value="" id="askArea">
+                        用户<b>这一轮</b>询问了餐厅的<b>区域</b>?
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" value="" id="askPrice">
+                        用户<b>这一轮</b>询问了餐厅的<b>价格</b>?
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" value="" id="askScore">
+                        用户<b>这一轮</b>询问了餐厅的<b>评分</b>?
+                    </label>
+                </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="searchDB()">保存</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+    <form>
+        <div class="form-group">
+            <label for="wizardResponse"><h4>第二步： 根据对话历史和搜索结果，您的回答是:</h4></label>
+            <textarea class="form-control" id="wizardResponse" rows="3"></textarea>
+        </div>
+        <div class="form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="" id="endOfDialogue">
+                结束回话?
+            </label>
+        </div>
+        <button type="submit" id="wizardSubmit" class="btn btn-primary" onclick="submitWizardResponse()">提交</button>
+    </form>
+        </div>
+    </div>
+    <div>
         <p></p>
-        <table id="added-articles" class="table">
-            <tr>
-                <th>Name</th>
-                <th>Address</th>
-            </tr>
-        </table>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                数据库搜索结果：
+            </h3>
+        </div>
+        <div class="panel-body">
+            <table id="added-articles" class="table">
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Price</th>
+                    <th>Score</th>
+                </tr>
+            </table>
+        </div>
     </div>
 
 

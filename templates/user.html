@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Bootstrap Example</title>
+    <title>User Example</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -12,17 +12,37 @@
 <body>
 
 <div class="container">
-    <h3>Task <i id="taskId">{{ taskId }}</i>: VenueName: <i>{{ venueName }}</i> FoodType: <i>{{ foodType }}</i>. PriceRange: <i>{{ priceRange }}</i>. Address: <i> {{ address }}</i>
-        You are looking for <i>{{ lookingFor }}</i></h3>
-    {% for item in sents %}
-        <p>{{ item }}</p>
-    {% endfor %}
+    <!-- <h3>Task <i id="taskId">{{ taskId }}</i>: VenueName: <i>{{ venueName }}</i> FoodType: <i>{{ foodType }}</i>. Area: <i>{{ area }}</i>. PriceRange: <i>{{ priceRange }}</i>. Address: <i> {{ address }}</i>
+        You are looking for <i>{{ lookingFor }}</i></h3> -->
+    <div>
+        <h3>标注说明:</h3>
+        <ul>
+            <li>不需要一次说完所有的搜索条件。</li>
+            <li>可以中途改变搜索条件，但最终必须要遵循Task描述。例如Task指明找中关村的餐馆，你可以先说“找一个朝阳公园附近的餐馆”，然后说“还是中关村附近的吧”。</li>
+            <li>只能通过菜系，区域和价位进行搜索。<font color="red">不能</font>说“有没有评分更好一点的？”，或者“有没有服务更好一点的”，或者"中关村附近的麦当劳"。</li>
+        </ul>
+    </div>
+
+    <h3>Task <i id="taskId">{{ taskId }}</i>: {{ userGoal }} </h3>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {% for item in sents %}
+            <p>{{ item }}</p>
+            {% endfor %}
+        </div>
+    </div>
 
    <form>
         <div class="form-group">
             <label for="userResponse">Your Response:</label>
             <textarea class="form-control" id="userResponse" rows="3"></textarea>
         </div>
+       <!--<div class="form-check">
+           <label class="form-check-label">
+               <input class="form-check-input" type="checkbox" value="" id="endOfDialogue">
+               end of dialogue?
+           </label>
+       </div> -->
         <button type="submit" id="userSubmit" class="btn btn-primary" onclick="submitUserResponse()">Submit</button>
     </form>
 </body>
