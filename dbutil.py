@@ -11,7 +11,7 @@ import codecs
 from pprint import pprint
 import re
 
-client = MongoClient('mongodb://localhost:27017/')
+client = MongoClient('mongodb://localhost:9006/')
 restdb = client['restdb']
 
 taskdb = restdb.tasks
@@ -285,7 +285,7 @@ def chooseByColum(col):
 if __name__=="__main__":
     #init()
     #resetWUtoUT()
-    #loadRestaurantData()
+    loadRestaurantData()
     #getAllFoodType()
     #getAllAreaName()
     #testSearchDB()

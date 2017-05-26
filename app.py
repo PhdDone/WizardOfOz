@@ -14,7 +14,7 @@ import logging
 app = Flask(__name__)
 
 app.config['MONGO_DBNAME'] = 'restdb'
-app.config['MONGO_URI'] = 'mongodb://localhost:27017/restdb'
+app.config['MONGO_URI'] = 'mongodb://localhost:9006/restdb'
 
 mongo = PyMongo(app)
 
@@ -233,7 +233,9 @@ def searchDB():
     if priceLowerBound != -1:
         key[dbutil.PRICE] = {'$gt':  priceLowerBound, '$lt': priceUpperBound}
     if len(name) != 0:
-        key[dbutil.NAME] = {'$regex': '.*' + name + '.*'}
+        name2 = name.split("(")
+        print name2[0]
+        key[dbutil.NAME] = {'$regex': '.*' + name2[0] + '.*'}
     app.logger.info("search key: %s", key)
 
     results = list(mongo.db.restaurant.find(key))
