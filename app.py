@@ -252,6 +252,7 @@ def wizardUpdateTask():
         #print content
         taskId = content[dbutil.TASK_ID]
         wizardResponse = content['wizard_response']
+        sysDiaAct = content[dbutil.SYS_DIA_ACT]
         #print wizardResponse
         task = dbutil.taskdb.find_one({dbutil.TASK_ID: taskId})
 
@@ -259,6 +260,8 @@ def wizardUpdateTask():
         #    return json.dumps({'status':'error','message': "请先填写对话状态信息"})
         task[dbutil.SYS_UTC].append("Sys: " + wizardResponse)
         task[dbutil.STATUS] = dbutil.UT
+        print task
+        task[dbutil.DIA_ACT].append({dbutil.SYS_DIA_ACT : sysDiaAct, dbutil.SYS_UTC : wizardResponse})
         end = content["end"]
         if end:
             task[dbutil.STATUS] = dbutil.FT

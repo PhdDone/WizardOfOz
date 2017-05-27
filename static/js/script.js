@@ -137,6 +137,8 @@ function searchDB() {
         console.log(wizardClickedFinish)
  		var taskId = $('#taskId').text();
  		var wizardResponse = $('#wizardResponse').val();
+ 		var sysAct = $('#sysAct').val()
+ 		console.log(sysAct)
  		var end = $('#endOfDialogue').prop('checked')
 		wizardClickedFinish = false
     	$.ajax({
@@ -145,6 +147,7 @@ function searchDB() {
           data: JSON.stringify({
             "task_id": taskId,
             "wizard_response": wizardResponse,
+            "sys_dia_act": sysAct,
             "end": end
           }),
           error: function(e) {

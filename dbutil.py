@@ -12,12 +12,10 @@ from pprint import pprint
 import re
 import os
 
-#client = MongoClient('mongodb://localhost:27017/')
+client = MongoClient('mongodb://localhost:27017/')
 
 print os.environ.keys()
-client = MongoClient(
-    os.environ['DB_PORT_27017_TCP_ADDR'],
-    27017)
+#client = MongoClient(os.environ['DB_PORT_27017_TCP_ADDR'], 27017)
 #if 'DB_PORT_27017_TCP_ADDR' in os.environ.keys():
 
 
@@ -56,8 +54,18 @@ DS_ASKING_SCORE = "ds_asking_score"
 DS_GOAL_LABELS = "goal_lables"
 DS_REQUEST_SLOTS = "request_slots"
 
+DIA_ACT = "dia_act"
+SYS_DIA_ACT = "sys_dia_act"
+SYS_DIA_ACT_HELLO = "hello"
+SYS_DIA_ACT_BYE = "bye"
+SYS_DIA_ACT_REQUEST = "request"
+SYS_DIA_ACT_CONFIRM = "confirm"
+SYS_DIA_ACT_INFORM = "inform"
+SYS_DIA_ACT_RECOMMEND = "recommend"
+SYS_DIA_ACT_REPEAT = "repeat"
+
 #TASK_SCHEMA = [STATUS, TASK_ID, NAME, PRICE_RANGE, ADDRESS, PHONE_NUMBER, FOOD_TYPE, AREA_NAME, USER_UTC, SYS_UTC, DIA_STATE]
-TASK_SCHEMA = [STATUS, TASK_ID, USER_UTC, SYS_UTC, DIA_STATE, USER_GOAL]
+TASK_SCHEMA = [STATUS, TASK_ID, USER_UTC, SYS_UTC, DIA_STATE, DIA_ACT, USER_GOAL]
 
 #Task status
 UT = "userTask"
@@ -84,12 +92,24 @@ AREA_NAME = "area_name"
 
 RESTAURANT_SCHEMA = [CITY, NAME, RATING_NUM, PRICE, URL, SCORE, LNG, LAT, COOK, ID, ADDRESS, AREA, AREA_NAME, FOOD_TYPE]
 
+DIA_ACT = "dia_act"
+#{"dia_act" : [{"sys_dia_act": "hello": "sys_utc": "hello world"}]}
+SYS_DIA_ACT = "sys_dia_act"
+SYS_DIA_ACT_HELLO = "hello"
+SYS_DIA_ACT_BYE = "bye"
+SYS_DIA_ACT_REQUEST = "request"
+SYS_DIA_ACT_CONFIRM = "confirm"
+SYS_DIA_ACT_INFORM = "inform"
+SYS_DIA_ACT_RECOMMEND = "recommend"
+SYS_DIA_ACT_REPEAT = "repeat"
+
+
 def checkTask(task):
     for key in TASK_SCHEMA:
         if key not in task.keys():
             #TODO: check task_id
             print "{} not in task: {}".format(key, task[TASK_ID])
-            if key == USER_UTC or key == SYS_UTC or key == DIA_STATE or key == AREA:
+            if key == USER_UTC or key == SYS_UTC or key == DIA_STATE or key == AREA or key == DIA_ACT:
                 task[key] = []
                 continue
             task[key] = "*"
