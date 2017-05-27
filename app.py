@@ -13,10 +13,10 @@ import logging
 
 app = Flask(__name__)
 
-app.config['MONGO_DBNAME'] = 'restdb'
-app.config['MONGO_URI'] = 'mongodb://localhost:9006/restdb'
+#app.config['MONGO_DBNAME'] = 'restdb'
+#app.config['MONGO_URI'] = 'mongodb://localhost:27017/restdb'
 
-mongo = PyMongo(app)
+#mongo = PyMongo(app)
 
 
 @app.route('/')
@@ -37,19 +37,19 @@ def buildSents(sysUtc, userUtc):
 
 @app.route('/task/<taskID>')
 def getTaskById(taskID):
-    task = mongo.db.tasks.find_one({dbutil.TASK_ID: taskID}, {'_id': False})
+    task = dbutil.taskdb.find_one({dbutil.TASK_ID: taskID}, {'_id': False})
     if task != None:
         return json.dumps(task)
     return json.dumps({"status": "Not found"})
 
 @app.route('/showAll')
 def show_all():
-    return json.dumps(list(mongo.db.tasks.find({},{'_id': False})))
+    return json.dumps(list(dbutil.taskdb.find({},{'_id': False})))
 
 @app.route('/newUserTask')
 def newUserTask():
     #get one task
-    task = mongo.db.tasks.find_and_modify(
+    task = dbutil.taskdb.find_and_modify(
         { dbutil.STATUS : dbutil.UT },
         {"$set": { dbutil.STATUS: dbutil.WU}},
     )
@@ -103,26 +103,26 @@ def userUpdateTask():
         taskId = content[dbutil.TASK_ID]
         userResponse = content['user_response']
         #print userResponse
-        task = mongo.db.tasks.find_one({dbutil.TASK_ID: taskId})
+        task = dbutil.taskdb.find_one({dbutil.TASK_ID: taskId})
         task[dbutil.USER_UTC].append("User: " + userResponse)
         task[dbutil.STATUS] = dbutil.WT
         #end = content["end"]
         #if end:
             #task[dbutil.STATUS] = dbutil.FT
-        mongo.db.tasks.remove({dbutil.TASK_ID: taskId})
-        mongo.db.tasks.insert(task)
+        dbutil.taskdb.remove({dbutil.TASK_ID: taskId})
+        dbutil.taskdb.insert(task)
         #print taskId
         return json.dumps({'status':'OK','task_id': taskId, 'user_response': userResponse})
 
 #Wizard
 @app.route('/newWizardTask')
 def newWizardTask():
-    task = mongo.db.tasks.find_and_modify(
+    task = dbutil.taskdb.find_and_modify(
         { dbutil.STATUS : dbutil.WT },
         {"$set": { dbutil.STATUS: dbutil.WW}}
     )
 
-    #task = mongo.db.tasks.find_one({dbutil.STATUS: dbutil.WT})
+    #task = dbutil.taskdb.find_one({dbutil.STATUS: dbutil.WT})
     if task is None:
         return render_template('checkUser.html')
 
@@ -151,7 +151,7 @@ def newWizardTask():
     #                 food_type: ""
     #            },
     #updateStatus
-    #result = mongo.db.tasks.update({"taskId": taskId}, {"$set": {
+    #result = dbutil.taskdb.update({"taskId": taskId}, {"$set": {
     #dbutil.STATUS: dbutil.WW
     #}})
     print prevAreaName
@@ -194,7 +194,7 @@ def searchDB():
     askScore = content[dbutil.DS_ASKING_SCORE]
 
     taskId = content[dbutil.TASK_ID]
-    task = mongo.db.tasks.find_one({dbutil.TASK_ID: taskId})
+    task = dbutil.taskdb.find_one({dbutil.TASK_ID: taskId})
     curDS = task[dbutil.DIA_STATE]
     userUtc = task[dbutil.USER_UTC]
     idx = len(userUtc) - 1
@@ -220,8 +220,8 @@ def searchDB():
     curDS[idx] = newDS
     task[dbutil.DIA_STATE] = curDS
     print task[dbutil.DIA_STATE]
-    mongo.db.tasks.remove({dbutil.TASK_ID: taskId})
-    mongo.db.tasks.insert(task)
+    dbutil.taskdb.remove({dbutil.TASK_ID: taskId})
+    dbutil.taskdb.insert(task)
 
     #res = list(restaurantdb.find({AREA_NAME : {'$regex' : '.*' + '三元桥' + '.*'}}))
     #build search key
@@ -238,7 +238,7 @@ def searchDB():
         key[dbutil.NAME] = {'$regex': '.*' + name2[0] + '.*'}
     app.logger.info("search key: %s", key)
 
-    results = list(mongo.db.restaurant.find(key))
+    results = list(dbutil.restaurantdb.find(key))
     #print results
     for r in results:
         del r['_id']
@@ -253,7 +253,7 @@ def wizardUpdateTask():
         taskId = content[dbutil.TASK_ID]
         wizardResponse = content['wizard_response']
         #print wizardResponse
-        task = mongo.db.tasks.find_one({dbutil.TASK_ID: taskId})
+        task = dbutil.taskdb.find_one({dbutil.TASK_ID: taskId})
 
         #if len(task[dbutil.DIA_STATE]) < len(task[dbutil.USER_UTC]):
         #    return json.dumps({'status':'error','message': "请先填写对话状态信息"})
@@ -263,8 +263,8 @@ def wizardUpdateTask():
         if end:
             task[dbutil.STATUS] = dbutil.FT
 
-        mongo.db.tasks.remove({dbutil.TASK_ID: taskId})
-        mongo.db.tasks.insert(task)
+        dbutil.taskdb.remove({dbutil.TASK_ID: taskId})
+        dbutil.taskdb.insert(task)
         #print taskId
         return json.dumps({'status':'OK','task_id': taskId, 'wizard_response': wizardResponse})
 
@@ -293,15 +293,15 @@ def initDb_v0():
         task1 = {'taskId':'123', 'status': 'userTask', 'content':['Sys: Welcome!'], 'foodType': 'Sichuan', 'lookingFor': 'address'}
         #Task2 example: find a  resturant near beiyou.
         task2 = {'taskId':'124', 'status': 'userTask', 'content':['Sys: Welcome!'], 'venueName': 'Shaxianxiaochi', 'lookingFor': 'address'}
-        mongo.db.tasks.insert(task1)
-        mongo.db.tasks.insert(task2)
-        print mongo.db.tasks.find_one({'taskId': '123'})
+        dbutil.taskdb.insert(task1)
+        dbutil.taskdb.insert(task2)
+        print dbutil.taskdb.find_one({'taskId': '123'})
         res1 = {'venueName': 'LaoSichuan', 'foodType': 'Sichuan', 'address': "zhongguancun", 'phone': "110"}
         res2 = {'venueName': 'Shaxianxiaochi', 'foodType': 'shaxian', 'address': "Xi tu cheng no. 10", 'phone': "911"}
         res3 = {'venueName': 'LaoSichuan', 'foodType': 'Sichuan', 'address': "xiyatu", 'phone': "001"}
-        mongo.db.restaurant.insert(res1)
-        mongo.db.restaurant.insert(res2)
-        mongo.db.restaurant.insert(res3)
+        dbutil.restaurantdb.insert(res1)
+        dbutil.restaurantdb.insert(res2)
+        dbutil.restaurantdb.insert(res3)
 
 
 if __name__=="__main__":

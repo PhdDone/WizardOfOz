@@ -1,0 +1,13 @@
+web:
+  build: .
+  command: python -u app.py
+  ports:
+    - "9005:9005"
+  volumes:
+    - .:/app
+  links:
+    - db
+db:
+  image: mongo:3.0.2
+  volumes:
+      - ./db:/data/db

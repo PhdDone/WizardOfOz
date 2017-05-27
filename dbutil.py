@@ -10,8 +10,17 @@ import itertools
 import codecs
 from pprint import pprint
 import re
+import os
 
-client = MongoClient('mongodb://localhost:9006/')
+#client = MongoClient('mongodb://localhost:27017/')
+
+print os.environ.keys()
+client = MongoClient(
+    os.environ['DB_PORT_27017_TCP_ADDR'],
+    27017)
+#if 'DB_PORT_27017_TCP_ADDR' in os.environ.keys():
+
+
 restdb = client['restdb']
 
 taskdb = restdb.tasks
