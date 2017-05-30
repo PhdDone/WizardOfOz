@@ -190,12 +190,14 @@
                     <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
                 </div>
                 <div class="form-group">
-                    <label for="priceRangeLowerBound">用户想要什么价位：</label>
-                    下限： <input type="text" class="form-control" id="priceRangeLowerBound" aria-describedby="priceRangeHelp"
-                               value={{ prevLowerBound }}>
-                    上限：<input type="text" class="form-control" id="priceRangeUpperBound" aria-describedby="priceRangeHelp"
-                              value={{ prevUpperBound }}>
-                    <small id="foodTypeHelp" class="form-text text-muted">例子: 35元左右->下限30，上40; 低于50元->上限50，下限0; 高于100元->上线0，下限100</small>
+                    <label for="priceRangeLowerBound">用户想要价位的下限：</label>
+                    <input type="text" class="form-control" id="priceRangeLowerBound" aria-describedby="priceRangeHelp"
+                               value={{ prevLowerBound }} >
+                    <br>
+                    <label for="priceRangeLowerBound">用户想要价位的上限：</label>
+                    <input type="text" class="form-control" id="priceRangeUpperBound" aria-describedby="priceRangeHelp"
+                              value={{ prevUpperBound }} placeholder="上限">
+                    <small id="priceRangeHelp" class="form-text text-muted">例子: 35元左右->下限填30，上限40; 低于50元->上限50，下限0; 高于100元->上线0，下限100</small>
                 </div>
 
 

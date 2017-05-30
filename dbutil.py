@@ -18,7 +18,6 @@ print os.environ.keys()
 #client = MongoClient(os.environ['DB_PORT_27017_TCP_ADDR'], 27017)
 #if 'DB_PORT_27017_TCP_ADDR' in os.environ.keys():
 
-
 restdb = client['restdb']
 
 taskdb = restdb.tasks
@@ -220,10 +219,10 @@ def loadTask():
     file = open(File, "r")
     taskID = 1
     for line in file.readlines():
-        user_goal = line
+        user_goal = line.split("。")[0]
         lookFor = line.split("。")[-1]
         res = p.findall(lookFor)
-        task = {TASK_ID: str(taskID), STATUS: 'userTask', SYS_UTC:["Sys: 欢迎! 您可以根据菜系，价格和区域查找餐厅"], USER_GOAL: user_goal}
+        task = {TASK_ID: str(taskID), STATUS: 'userTask', SYS_UTC:["Sys: 欢迎! 您可以根据菜系，价格和区域查找餐厅"], USER_GOAL: user_goal + "。" + lookFor}
         insertTask(task)
         taskID += 1
         print taskdb.find_one({'taskId': '123'})
@@ -313,7 +312,7 @@ def chooseByColum(col):
 
 if __name__=="__main__":
     #init()
-    #resetWUtoUT()
+
     loadRestaurantData()
     #getAllFoodType()
     #getAllAreaName()
@@ -322,4 +321,5 @@ if __name__=="__main__":
     #loadTask()
     #buildQueryKey()
     resetWWtoWT()
+    resetWUtoUT()
     #chooseByColum(FOOD_TYPE)
