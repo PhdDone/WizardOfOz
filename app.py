@@ -49,7 +49,7 @@ def buildSents(sysUtc, userUtc):
     return sents
 
 @app.route('/resetTask/<taskID>')
-def getTaskById(taskID):
+def resetTaskById(taskID):
     task = dbutil.taskdb.find_one({dbutil.TASK_ID: taskID}, {'_id': False})
     if task != None:
         return json.dumps(task)
