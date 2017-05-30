@@ -310,4 +310,5 @@ def initDb_v0():
 if __name__=="__main__":
     logging.basicConfig(filename='app.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
     dbutil.loadTask()
+    dbutil.loadRestaurantData()
     app.run(host='0.0.0.0', port=9005, debug=True)
