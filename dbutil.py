@@ -102,6 +102,11 @@ SYS_DIA_ACT_INFORM = "inform"
 SYS_DIA_ACT_RECOMMEND = "recommend"
 SYS_DIA_ACT_REPEAT = "repeat"
 
+def resetTask(taskID):
+    oldTask = list(taskdb.find({TASK_ID: taskID}))[0]
+    user_goal = oldTask[USER_GOAL]
+    task = {TASK_ID: str(taskID), STATUS: 'userTask', SYS_UTC:["Sys: 欢迎! 您可以根据菜系，价格和区域查找餐厅"], USER_GOAL: user_goal}
+    insertTask(task)
 
 def checkTask(task):
     for key in TASK_SCHEMA:
@@ -309,6 +314,14 @@ def chooseByColum(col):
         if r[col] not in used:
             print r[col], len(list(restaurantdb.find(r)))
             used.append(r[col])
+
+def haveUserTask():
+    UT_tasks = list(taskdb.find({STATUS : UT}))
+    return len(UT_tasks) > 0
+
+def haveWizardTask():
+    WT_tasks = list(taskdb.find({STATUS : WT}))
+    return len(WT_tasks) > 0
 
 if __name__=="__main__":
     #init()

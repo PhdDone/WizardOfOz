@@ -10,6 +10,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 import logging
+import random
 
 app = Flask(__name__)
 
@@ -19,9 +20,21 @@ app = Flask(__name__)
 #mongo = PyMongo(app)
 
 
+
+@app.route('/newTask')
+def newTask():
+    if dbutil.haveWizardTask() and random.uniform(0, 1) > 0.4:
+        return newWizardTask()
+    else:
+        if dbutil.haveUserTask():
+            return newUserTask()
+    if dbutil.haveWizardTask():
+        return newUserTask()
+    return render_template("noTask.html")
+
 @app.route('/')
 def hello():
-    return 'Welcome to KENG!'
+    return render_template('home.html')
 
 def buildSents(sysUtc, userUtc):
     sents = []
@@ -34,6 +47,13 @@ def buildSents(sysUtc, userUtc):
         sents.append(sysUtc[idx])
         idx += 1
     return sents
+
+@app.route('/resetTask/<taskID>')
+def getTaskById(taskID):
+    task = dbutil.taskdb.find_one({dbutil.TASK_ID: taskID}, {'_id': False})
+    if task != None:
+        return json.dumps(task)
+    return json.dumps({"status": "Not found"})
 
 @app.route('/task/<taskID>')
 def getTaskById(taskID):
