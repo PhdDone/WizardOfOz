@@ -26,27 +26,13 @@
 
     <div class="container">
 
-      <form class="form-signin ajax" action="/signIn" method="post" data-replace="#res"  role="form">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="email" name="username" class="form-control" placeholder="Email address" required autofocus>
-        <input type="password" name="password" class="form-control" placeholder="Password" required>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
-        </div>
+      <form class="form-signin ajax" action = "/setcookie" method="POST" data-replace="#res"  role="form">
+        <h2 class="form-signin-heading">请输入您的邮箱：</h2>
+        <input type="email" name="username" class="form-control" placeholder="Your email" required autofocus>
+        <br>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       </form>
-	<div>
- 	
-		<h2 ><span id="res">Heading<span></h2>
-	</div>
     </div> <!-- /container -->
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
   </body>
 </html>
 

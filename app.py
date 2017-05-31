@@ -12,6 +12,9 @@ sys.setdefaultencoding('utf-8')
 import logging
 import random
 
+from flask import render_template, request, redirect, url_for
+
+
 app = Flask(__name__)
 
 #app.config['MONGO_DBNAME'] = 'restdb'
@@ -20,9 +23,64 @@ app = Flask(__name__)
 #mongo = PyMongo(app)
 
 
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+@app.route('/setcookie', methods = ['POST', 'GET'])
+def setcookie():
+    if request.method == 'POST':
+        user = request.form['username']
+        resp = redirect(url_for("newTask"))
+        resp.set_cookie('UserName', user)
+        return resp
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        # You should really validate that these fields
+        # are provided, rather than displaying an ugly
+        # error message, but for the sake of a simple
+        # example we'll just assume they are provided
+
+        user_name = request.form["name"]
+        #password = request.form["password"]
+        #user = db.find_by_name_and_password(user_name, password)
+
+        #if not user:
+            # Again, throwing an error is not a user-friendly
+            # way of handling this, but this is just an example
+        #    raise ValueError("Invalid username or password supplied")
+
+        # Note we don't *return* the response immediately
+        response = redirect(url_for("newTask"))
+        response.set_cookie('UserName', user_name)
+        return response
+    else:
+        return render_template("index.html")
+
+@app.route("/do-that")
+def do_that():
+    user_id = request.cookies.get('UserName')
+    if user_id:
+        user = database.get(user_id)
+        if user:
+            # Success!
+            return render_template('do_that.html', user=user)
+        else:
+            return redirect(url_for('login'))
+    else:
+        return redirect(url_for('login'))
+
 
 @app.route('/newTask')
 def newTask():
+    user_name = request.cookies.get('UserName')
+
+    if not user_name:
+        return redirect(url_for('login'))
+    app.logger.info("User %s is assigned with new random task", user_name)
+
     if dbutil.haveWizardTask() and random.uniform(0, 1) > 0.4:
         return newWizardTask()
     else:
@@ -68,6 +126,11 @@ def show_all():
 
 @app.route('/newUserTask')
 def newUserTask():
+    user_name = request.cookies.get('UserName')
+
+    if not user_name:
+        return redirect(url_for('login'))
+    app.logger.info("User %s is assigned with a new user HIT", user_name)
     #get one task
     task = dbutil.taskdb.find_and_modify(
         { dbutil.STATUS : dbutil.UT },
@@ -116,15 +179,20 @@ def newUserTask():
 
 @app.route('/userUpdateTask', methods=['POST'])
 def userUpdateTask():
+    user_name = request.cookies.get('UserName')
+    if not user_name:
+        return redirect(url_for('login'))
+
+    app.logger.info("User %s finish a user HIT", user_name)
     if request.method == "POST":
         #print request
         content = request.get_json()
-        print content
         taskId = content[dbutil.TASK_ID]
         userResponse = content['user_response']
         #print userResponse
         task = dbutil.taskdb.find_one({dbutil.TASK_ID: taskId})
         task[dbutil.USER_UTC].append("User: " + userResponse)
+        task[dbutil.USER_UTC_ANNOTATOR].append(user_name)
         task[dbutil.STATUS] = dbutil.WT
         #end = content["end"]
         #if end:
@@ -137,6 +205,12 @@ def userUpdateTask():
 #Wizard
 @app.route('/newWizardTask')
 def newWizardTask():
+    user_name = request.cookies.get('UserName')
+
+    if not user_name:
+        return redirect(url_for('login'))
+    app.logger.info("User %s is assigned with new wizard HIT", user_name)
+
     task = dbutil.taskdb.find_and_modify(
         { dbutil.STATUS : dbutil.WT },
         {"$set": { dbutil.STATUS: dbutil.WW}}
@@ -187,6 +261,11 @@ def createDefaultDS():
 
 @app.route('/searchDB',methods=['POST'])
 def searchDB():
+    user_name = request.cookies.get('UserName')
+    if not user_name:
+        return redirect(url_for('login'))
+
+    app.logger.info("User %s is searching DB", user_name)
     #print request
     content = request.get_json()
     area = content[dbutil.AREA]
@@ -228,7 +307,8 @@ def searchDB():
               dbutil.DS_REQUEST_SLOTS : { dbutil.DS_ASKING_AREA: askArea,
                                    #dbutil.DS_ASKING_FOOD_TYPE: askFoodType,
                                    dbutil.DS_ASKING_PRICE: askPrice,
-                                   dbutil.DS_ASKING_SCORE: askScore}
+                                   dbutil.DS_ASKING_SCORE: askScore},
+              dbutil.SYS_DIA_ANNOTATOR: user_name
     }
 
     #newDS = foodType + "," + area + "," + str(priceLowerBound) + "," + str(priceUpperBound) + "," + str(askFoodType) + "," + str(askArea) + "," + str(askPrice)
@@ -269,6 +349,11 @@ def searchDB():
 
 @app.route('/wizardUpdateTask', methods=['POST'])
 def wizardUpdateTask():
+    user_name = request.cookies.get('UserName')
+    if not user_name:
+        return redirect(url_for('login'))
+
+    app.logger.info("User %s finish a wizard HIT ", user_name)
     if request.method == "POST":
         #print request
         content = request.get_json()
@@ -285,8 +370,8 @@ def wizardUpdateTask():
         #    return json.dumps({'status':'error','message': "请先填写对话状态信息"})
         task[dbutil.SYS_UTC].append("Sys: " + wizardResponse)
         task[dbutil.STATUS] = dbutil.UT
-        print task
-        task[dbutil.DIA_ACT].append({dbutil.SYS_DIA_ACT : sysDiaAct, dbutil.SYS_UTC : wizardResponse, dbutil.SYS_SLOT_INFO: sysSlotInfo})
+        #print task
+        task[dbutil.DIA_ACT].append({dbutil.SYS_DIA_ACT : sysDiaAct, dbutil.SYS_UTC : wizardResponse, dbutil.SYS_SLOT_INFO: sysSlotInfo, dbutil.SYS_DIA_ANNOTATOR: user_name})
         end = content["end"]
         if end:
             task[dbutil.STATUS] = dbutil.FT

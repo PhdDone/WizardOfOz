@@ -33,6 +33,7 @@ PHONE_NUMBER = "phone_number"
 FOOD_TYPE = "food_type"
 AREA_NAME = "area_name"
 USER_UTC = "user_utc" #string array
+USER_UTC_ANNOTATOR = "user_utc_annotator"
 SYS_UTC = "sys_utc" #string array
 DIA_STATE = "dia_state"  #string array
 LOOKING_FOR = "looking_for"
@@ -62,9 +63,10 @@ SYS_DIA_ACT_CONFIRM = "confirm"
 SYS_DIA_ACT_INFORM = "inform"
 SYS_DIA_ACT_RECOMMEND = "recommend"
 SYS_DIA_ACT_REPEAT = "repeat"
+SYS_DIA_ANNOTATOR = "sys_dia_annotator"
 
 #TASK_SCHEMA = [STATUS, TASK_ID, NAME, PRICE_RANGE, ADDRESS, PHONE_NUMBER, FOOD_TYPE, AREA_NAME, USER_UTC, SYS_UTC, DIA_STATE]
-TASK_SCHEMA = [STATUS, TASK_ID, USER_UTC, SYS_UTC, DIA_STATE, DIA_ACT, USER_GOAL]
+TASK_SCHEMA = [STATUS, TASK_ID, USER_UTC, SYS_UTC, DIA_STATE, DIA_ACT, USER_GOAL, USER_UTC_ANNOTATOR]
 
 #Task status
 UT = "userTask"
@@ -115,7 +117,7 @@ def checkTask(task):
         if key not in task.keys():
             #TODO: check task_id
             print "{} not in task: {}".format(key, task[TASK_ID])
-            if key == USER_UTC or key == SYS_UTC or key == DIA_STATE or key == AREA or key == DIA_ACT:
+            if key == USER_UTC or key == SYS_UTC or key == DIA_STATE or key == AREA or key == DIA_ACT or key == USER_UTC_ANNOTATOR:
                 task[key] = []
                 continue
             task[key] = "*"
