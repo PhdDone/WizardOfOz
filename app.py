@@ -329,7 +329,7 @@ def searchDB():
     if len(area) != 0:
         key[dbutil.AREA_NAME] = {'$regex': '.*' + area + '.*'}
     if len(foodType) != 0:
-        key[dbutil.FOOD_TYPE] = foodType
+        key[dbutil.FOOD_TYPE] = {'$regex': '.*' + foodType + '.*'}
     if priceLowerBound != -1:
         key[dbutil.PRICE] = {'$gt':  priceLowerBound, '$lt': priceUpperBound}
     if len(name) != 0:
