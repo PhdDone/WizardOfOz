@@ -259,10 +259,13 @@ def searchDB():
     app.logger.info("search key: %s", key)
 
     results = list(dbutil.restaurantdb.find(key))
+
     #print results
     for r in results:
         del r['_id']
-    return json.dumps(results)
+
+    sortedlist = sorted(results, key=lambda k: float(k[dbutil.SCORE]), reverse=True)
+    return json.dumps(sortedlist)
 
 @app.route('/wizardUpdateTask', methods=['POST'])
 def wizardUpdateTask():
@@ -273,6 +276,8 @@ def wizardUpdateTask():
         taskId = content[dbutil.TASK_ID]
         wizardResponse = content['wizard_response']
         sysDiaAct = content[dbutil.SYS_DIA_ACT]
+        sysSlotInfo = content[dbutil.SYS_SLOT_INFO]
+        print sysSlotInfo
         #print wizardResponse
         task = dbutil.taskdb.find_one({dbutil.TASK_ID: taskId})
 
@@ -281,7 +286,7 @@ def wizardUpdateTask():
         task[dbutil.SYS_UTC].append("Sys: " + wizardResponse)
         task[dbutil.STATUS] = dbutil.UT
         print task
-        task[dbutil.DIA_ACT].append({dbutil.SYS_DIA_ACT : sysDiaAct, dbutil.SYS_UTC : wizardResponse})
+        task[dbutil.DIA_ACT].append({dbutil.SYS_DIA_ACT : sysDiaAct, dbutil.SYS_UTC : wizardResponse, dbutil.SYS_SLOT_INFO: sysSlotInfo})
         end = content["end"]
         if end:
             task[dbutil.STATUS] = dbutil.FT

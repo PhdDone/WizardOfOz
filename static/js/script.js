@@ -93,13 +93,14 @@ function searchDB() {
           success: function(response){
           $("tr:has(td)").remove();
 
-          // 2. get each article
+          // 2. get each res
           console.log(response)
+          //sort response by score
           $.each(response, function (index, restaurant) {
               // 2.2 Create table column for categories
               var td_categories = $("<td/>");
 
-              // 2.3 get each category of this article
+              // 2.3 get each category of this restaurant
               /*$.each(article.categories, function (i, category) {
                   var span = $("<span/>");
                   span.text(category);
@@ -119,8 +120,10 @@ function searchDB() {
               var address = '<td> ' + restaurant.address + '</td>'
               var price = '<td>' + restaurant.price + '</td>'
               var score = '<td>' + restaurant.score + '</td>'
+              var area = '<td>' + restaurant.area_name + '</td>'
+              var foodType = '<td>' + restaurant.food_type + '</td>'
 
-          	$('#added-articles').append( '<tr>' + venueName + address + price + score + '</tr>')
+          	$('#added-articles').append( '<tr>' + venueName + address + score + price + area + foodType + '</tr>')
               // 2.6 Create a new row and append 3 columns (title+url, categories, tags)
               /*$("#added-articles").append($('<tr/>')
                       .append($('<td/>').html("<a href='"+article.url+"'>"+article.title+"</a>"))
@@ -140,7 +143,37 @@ function searchDB() {
  		var sysAct = $('#sysAct').val()
  		console.log(sysAct)
  		var end = $('#endOfDialogue').prop('checked')
-		wizardClickedFinish = false
+
+
+		var sysSlotNames= $(".sysSlotName").map(function() {
+   			return $(this).val();
+		}).get();
+
+		var sysSlotValues= $(".sysSlotValue").map(function() {
+           			return $(this).val();
+        		}).get();
+
+		var end = 0
+		var slotInfo = {}
+		for (var i = 0; i < sysSlotNames.length; i++) {
+			var name = sysSlotNames[i]
+			if (name.includes("-")) {
+				continue
+			}
+			var slotName = name.split(" ")[1]
+			var slotValue = sysSlotValues[i]
+			if(!slotValue) {
+				slotValue = "UNK"
+			}
+			slotInfo[slotName] = slotValue
+			console.log(slotInfo)
+		}
+
+
+
+		//console.log($('.slotName').first.val());
+		console.log($('#sysSlotValue0').val())
+
     	$.ajax({
           type: 'POST',
           url: "/wizardUpdateTask",
@@ -148,7 +181,8 @@ function searchDB() {
             "task_id": taskId,
             "wizard_response": wizardResponse,
             "sys_dia_act": sysAct,
-            "end": end
+            "end": end,
+            "sys_slot_info": slotInfo
           }),
           error: function(e) {
             alert(JSON.stringify(e))
@@ -162,10 +196,3 @@ function searchDB() {
               			}
         });
        };
-
-  function validWizardClickedFinish() {
-     if (wizardClickedFinish) {
-     return true
-     }
-     return false
-  }

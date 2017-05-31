@@ -102,6 +102,8 @@ SYS_DIA_ACT_INFORM = "inform"
 SYS_DIA_ACT_RECOMMEND = "recommend"
 SYS_DIA_ACT_REPEAT = "repeat"
 
+SYS_SLOT_INFO = "sys_slot_info"
+
 def resetTask(taskID):
     oldTask = list(taskdb.find({TASK_ID: taskID}))[0]
     user_goal = oldTask[USER_GOAL]

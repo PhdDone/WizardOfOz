@@ -16,9 +16,10 @@
     <div>
         <h3>标注说明:</h3>
         <ul>
-            <li>一次<font color="red">不能</font>同时回复多个餐馆的实体。</li>
-            <li>如果数据库没有搜索结果或者有多个结果，您可以选择要求用户改变搜索条件。</li>
-            <li>在标注区域时用正规化后的数据，如果用户说“中关村附近”，只填“中关村”。</li>
+            <li>一次<font color="red">不能</font>同时回复多个餐馆的信息。</li>
+            <li>如果数据库没有搜索结果或者有太多结果，您可以选择要求用户改变或者增加搜索条件，用户搜索条件只能从集合<font color="red">（区域, 菜系, 价格)</font>中选取。
+                。</li>
+            <li>在标注区域时用正规化后的数据，如果用户说“中关村附近”，必须只填<font color="red">中关村</font>。 </li>
         </ul>
     </div>
 
@@ -267,10 +268,12 @@
         <div class="form-group">
             <label for="wizardResponse"><h4>第二步： 根据对话历史和搜索结果，您的回答是:</h4></label>
             <textarea class="form-control" id="wizardResponse" rows="3"></textarea>
+            <small id="foodTypeHelp" class="form-text text-muted">*如果需要用户提供更多信息，只能选择让用户提供<b>区域</b>，<b>价格</b>和<b>评分</b>的喜好.</small>
         </div>
         <div class="form-group">
-            <label for="">请选择系统行为</label>
+            <label for="sysAct">请选择系统行为:</label>
             <select class="form-control" id="sysAct">
+                <option disabled selected value> -- 请选择系统行为 -- </option>
                 <option>hello</option>
                 <option>bye</option>
                 <option>request</option>
@@ -281,7 +284,78 @@
                 <option>other</option>
             </select>
         </div>
-        <div class="form-check">
+        <div class="form-group col-xs-12" style="padding:0">
+            <h5>此轮对话您提供给用户或需要用户提供的信息:</h5>
+            <div class="col-xs-5" style="padding:0">
+                <select class="form-control sysSlotName" id="sysSlotName0">
+                    <option> -- 请选择信息类型 -- </option>
+                    <option>餐馆区域 area</option>
+                    <option>餐馆评分 score</option>
+                    <option>餐馆名称 name</option>
+                    <option>餐馆价格 price</option>
+                    <option>餐馆地址 address</option>
+                </select>
+            </div>
+            <div class="col-xs-5">
+                <input type="text" class="form-control sysSlotValue" id="sysSlotValue0" aria-describedby="nameHelp" placeholder="如需要用户提供此信息则留空">
+            </div>
+            <div class="col-xs-12">
+            </div>
+            <div class="col-xs-5" style="padding:0">
+                <select class="form-control sysSlotName" id="sysSlotName1">
+                    <option> -- 请选择信息类型 -- </option>
+                    <option>餐馆区域 area</option>
+                    <option>餐馆评分 score</option>
+                    <option>餐馆名称 name</option>
+                    <option>餐馆价格 price</option>
+                    <option>餐馆地址 address</option>
+                </select>
+            </div>
+            <div class="col-xs-5">
+                <input type="text" class="form-control sysSlotValue" id="sysSlotValue1" aria-describedby="nameHelp" placeholder="如需要用户提供此信息则留空">
+            </div>
+            <div class="col-xs-5" style="padding:0">
+                <select class="form-control sysSlotName" id="sysSlotName2">
+                    <option> -- 请选择信息类型 -- </option>
+                    <option>餐馆区域 area</option>
+                    <option>餐馆评分 score</option>
+                    <option>餐馆名称 name</option>
+                    <option>餐馆价格 price</option>
+                    <option>餐馆地址 address</option>
+                </select>
+            </div>
+            <div class="col-xs-5">
+                <input type="text" class="form-control sysSlotValue" id="sysSlotValue2" aria-describedby="nameHelp" placeholder="如需要用户提供此信息则留空">
+            </div>
+            <div class="col-xs-5" style="padding:0">
+                <select class="form-control sysSlotName" id="sysSlotName3">
+                    <option> -- 请选择信息类型 -- </option>
+                    <option>餐馆区域 area</option>
+                    <option>餐馆评分 score</option>
+                    <option>餐馆名称 name</option>
+                    <option>餐馆价格 price</option>
+                    <option>餐馆地址 address</option>
+                </select>
+            </div>
+            <div class="col-xs-5">
+                <input type="text" class="form-control sysSlotValue" id="sysSlotValue3" aria-describedby="nameHelp" placeholder="如需要用户提供此信息则留空">
+            </div>
+            <div class="col-xs-5" style="padding:0">
+                <select class="form-control sysSlotName" id="sysSlotName4">
+                    <option> -- 请选择信息类型 -- </option>
+                    <option>餐馆区域 area</option>
+                    <option>餐馆评分 score</option>
+                    <option>餐馆名称 name</option>
+                    <option>餐馆价格 price</option>
+                    <option>餐馆地址 address</option>
+                </select>
+            </div>
+            <div class="col-xs-5">
+                <input type="text" class="form-control sysSlotValue" id="sysSlotValue4" aria-describedby="nameHelp" placeholder="如需要用户提供此信息则留空">
+            </div>
+        </div>
+
+        <div class="form-check col-xs-12" style="padding:0">
             <label class="form-check-label">
                 <input class="form-check-input" type="checkbox" value="" id="endOfDialogue">
                 结束回话?
@@ -305,8 +379,10 @@
                 <tr>
                     <th>Name</th>
                     <th>Address</th>
-                    <th>Price</th>
                     <th>Score</th>
+                    <th>Price*</th>
+                    <th>Area Name*</th>
+                    <th>Food Type*</th>
                 </tr>
             </table>
         </div>
