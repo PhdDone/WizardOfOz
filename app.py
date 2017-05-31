@@ -12,6 +12,8 @@ sys.setdefaultencoding('utf-8')
 import logging
 import random
 
+from logging.handlers import RotatingFileHandler
+
 from flask import render_template, request, redirect, url_for
 
 
@@ -336,7 +338,7 @@ def searchDB():
         name2 = name.split("(")
         print name2[0]
         key[dbutil.NAME] = {'$regex': '.*' + name2[0] + '.*'}
-    app.logger.info("search key: %s", key)
+    app.logger.info("User %s search key: %s", user_name, key)
 
     results = list(dbutil.restaurantdb.find(key))
 
@@ -378,7 +380,7 @@ def wizardUpdateTask():
 
         dbutil.taskdb.remove({dbutil.TASK_ID: taskId})
         dbutil.taskdb.insert(task)
-        #print taskId
+        print "returning"
         return json.dumps({'status':'OK','task_id': taskId, 'wizard_response': wizardResponse})
 
 def initDb_v0():
@@ -419,6 +421,11 @@ def initDb_v0():
 
 if __name__=="__main__":
     logging.basicConfig(filename='app.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+    handler = RotatingFileHandler('foo.log', maxBytes=1000000000, backupCount=10)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    handler.setLevel(logging.INFO)
+    app.logger.addHandler(handler)
     dbutil.loadTask()
     dbutil.loadRestaurantData()
     app.run(host='0.0.0.0', port=9005, debug=True)
