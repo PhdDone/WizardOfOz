@@ -83,7 +83,7 @@ def newTask():
         return redirect(url_for('login'))
     app.logger.info("User %s is assigned with new random task", user_name)
 
-    if dbutil.haveWizardTask() and random.uniform(0, 1) > 0.4:
+    if dbutil.haveWizardTask() and random.uniform(0, 1) > 0.3:
         return newWizardTask()
     else:
         if dbutil.haveUserTask():
