@@ -224,7 +224,7 @@ def loadTask():
 
     import re
     p = re.compile('\{(.*?)\}')
-    File = "./data/foo"
+    File = "./data/sampled.task.smoothed.500"
     file = open(File, "r")
     taskID = 1
     for line in file.readlines():
@@ -281,7 +281,7 @@ def buildQueryKey():
     lenDist = {}
     import re
     p = re.compile('{(.*?)}')
-    File = "./data/foo"
+    File = "./data/sampled.task.smoothed.500"
     file = open(File, "r")
     idx = 0
     for line in file.readlines():
@@ -305,7 +305,7 @@ def buildQueryKey():
             lenDist[resLen] = [idx]
         idx += 1
     keys = lenDist.keys()
-    print keys
+    print lenDist[0]
     sorted(keys)
     for k in keys:
         print k, len(lenDist[k])
@@ -330,13 +330,13 @@ def haveWizardTask():
 if __name__=="__main__":
     #init()
 
-    loadRestaurantData()
+    #loadRestaurantData()
     #getAllFoodType()
     #getAllAreaName()
     #testSearchDB()
     #logging.basicConfig(filename='app.log',level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
     #loadTask()
-    #buildQueryKey()
-    resetWWtoWT()
-    resetWUtoUT()
+    buildQueryKey()
+    #resetWWtoWT()
+    #resetWUtoUT()
     #chooseByColum(FOOD_TYPE)
