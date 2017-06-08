@@ -69,6 +69,7 @@ SYS_DIA_ANNOTATOR = "sys_dia_annotator"
 TASK_SCHEMA = [STATUS, TASK_ID, USER_UTC, SYS_UTC, DIA_STATE, DIA_ACT, USER_GOAL, USER_UTC_ANNOTATOR]
 
 #Task status
+NT = "newTask"
 UT = "userTask"
 WU = "waitForUserHit"
 WT = "wizardTask"
@@ -126,7 +127,7 @@ def checkTask(task):
 def checkRestaurant(restaurant):
     for key in RESTAURANT_SCHEMA:
         if key not in restaurant.keys():
-            print "{} not in task: {}".format(key, restaurant[ID])
+            #print "{} not in task: {}".format(key, restaurant[ID])
             if key == COOK or key == AREA:
                 restaurant[key] = []
                 continue
@@ -224,14 +225,14 @@ def loadTask():
 
     import re
     p = re.compile('\{(.*?)\}')
-    File = "./data/sampled.task.smoothed.500"
+    File = "./data/task.test"
     file = open(File, "r")
     taskID = 1
     for line in file.readlines():
         user_goal = line.split("。")[0]
         lookFor = line.split("。")[-1]
         res = p.findall(lookFor)
-        task = {TASK_ID: str(taskID), STATUS: 'userTask', SYS_UTC:["Sys: 欢迎! 您可以根据菜系，价格和区域查找餐厅"], USER_GOAL: user_goal + "。" + lookFor}
+        task = {TASK_ID: str(taskID), STATUS: NT, SYS_UTC:["Sys: 欢迎! 您可以根据菜系，价格和区域查找餐厅"], USER_GOAL: user_goal + "。" + lookFor}
         insertTask(task)
         taskID += 1
         print taskdb.find_one({'taskId': '123'})

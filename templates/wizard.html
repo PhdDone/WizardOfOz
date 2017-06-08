@@ -12,18 +12,18 @@
 <body>
 
 <div class="container">
-
     <div>
         <h3>标注说明:</h3>
         <ul>
             <li>一次<font color="red">不能</font>同时回复多个餐馆的信息。</li>
             <li>如果数据库没有搜索结果或者有太多结果，您可以选择要求用户改变或者增加搜索条件，用户搜索条件只能从集合<font color="red">（区域, 菜系, 价格)</font>中选取。
-                。</li>
-            <li>在标注区域时用正规化后的数据，如果用户说“中关村附近”，必须只填<font color="red">中关村</font>。 </li>
+                。
+            </li>
+            <li>在标注区域时用正规化后的数据，如果用户说“中关村附近”，必须只填<font color="red">中关村</font>。</li>
         </ul>
     </div>
 
-    <h3>Task <i id="taskId">{{ taskId }}</i> </h3>
+    <h3>Task <i id="taskId">{{ taskId }}</i></h3>
     <div class="panel panel-default">
         <div class="panel-body">
             {% for item in sents %}
@@ -178,40 +178,44 @@
                         </h3>
                     </div>
                     <div class="panel-body">
-                <div class="form-group">
-                    <label for="foodType">用户选择什么菜系：</label>
-                    <input type="text" class="form-control" id="foodType" aria-describedby="foodTypeHelp"
-                           value={{ prevFoodType.decode('utf-8') }}>
-                    <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
-                </div>
+                        <div class="form-group">
+                            <label for="foodType">用户选择什么菜系：</label>
+                            <input type="text" class="form-control" id="foodType" aria-describedby="foodTypeHelp"
+                                   value={{ prevFoodType.decode('utf-8') }}>
+                            <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
+                        </div>
 
-                <div class="form-group">
-                    <label for="area">用户选择什么区域就餐：</label>
-                    <input type="text" class="form-control" id="area" value={{ prevAreaName.decode('utf-8') }}>
-                    <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
-                </div>
-                <div class="form-group">
-                    <label for="priceRangeLowerBound">用户想要价位的下限：</label>
-                    <input type="text" class="form-control" id="priceRangeLowerBound" aria-describedby="priceRangeHelp"
-                               value={{ prevLowerBound }} >
-                    <br>
-                    <label for="priceRangeLowerBound">用户想要价位的上限：</label>
-                    <input type="text" class="form-control" id="priceRangeUpperBound" aria-describedby="priceRangeHelp"
-                              value={{ prevUpperBound }} placeholder="上限">
-                    <small id="priceRangeHelp" class="form-text text-muted">例子: 35元左右->下限填30，上限40; 低于50元->上限50，下限0; 高于100元->上线0，下限100</small>
-                </div>
+                        <div class="form-group">
+                            <label for="area">用户选择什么区域就餐：</label>
+                            <input type="text" class="form-control" id="area" value={{ prevAreaName.decode('utf-8') }}>
+                            <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="priceRangeLowerBound">用户想要价位的下限：</label>
+                            <input type="text" class="form-control" id="priceRangeLowerBound"
+                                   aria-describedby="priceRangeHelp"
+                                   value={{ prevLowerBound }}>
+                            <br>
+                            <label for="priceRangeLowerBound">用户想要价位的上限：</label>
+                            <input type="text" class="form-control" id="priceRangeUpperBound"
+                                   aria-describedby="priceRangeHelp"
+                                   value={{ prevUpperBound }} placeholder="上限">
+                            <small id="priceRangeHelp" class="form-text text-muted">例子: 35元左右->下限填30，上限40;
+                                低于50元->上限50，下限0; 高于100元->上线0，下限100
+                            </small>
+                        </div>
 
 
-                <!--<div class="form-group">
-                    <label for="area">Area</label>
-                    <input type="text" class="form-control" id="area" placeholder="Area">
-                    <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
-                </div>
-                <div class="form-group">
-                    <label for="priceRange">Price Range</label>
-                    <input type="text" class="form-control" id="priceRange" placeholder="Price Range">
-                    <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
-                </div> -->
+                        <!--<div class="form-group">
+                            <label for="area">Area</label>
+                            <input type="text" class="form-control" id="area" placeholder="Area">
+                            <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="priceRange">Price Range</label>
+                            <input type="text" class="form-control" id="priceRange" placeholder="Price Range">
+                            <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
+                        </div> -->
                     </div>
                 </div>
                 <div class="panel panel-default">
@@ -222,12 +226,12 @@
                     </div>
                     <div class="panel-body">
 
-                <!-- <div class="form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" value="" id="askFoodType">
-                        用户询问了餐厅的<b>菜系</b>?
-                    </label>
-                </div> -->
+                        <!-- <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" value="" id="askFoodType">
+                                用户询问了餐厅的<b>菜系</b>?
+                            </label>
+                        </div> -->
 
                         <div class="form-group">
                             <label for="name">系统和用户<b>这一轮</b>正在讨论的餐馆的名称：</label>
@@ -235,26 +239,26 @@
                                    placeholder="餐馆名称">
                             <small id="foodTypeHelp" class="form-text text-muted">Leave blank if not known.</small>
                         </div>
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" value="" id="askArea">
-                        用户<b>这一轮</b>询问了餐厅的<b>区域</b>?
-                    </label>
-                </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" value="" id="askArea">
+                                用户<b>这一轮</b>询问了餐厅的<b>区域</b>?
+                            </label>
+                        </div>
 
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" value="" id="askPrice">
-                        用户<b>这一轮</b>询问了餐厅的<b>价格</b>?
-                    </label>
-                </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" value="" id="askPrice">
+                                用户<b>这一轮</b>询问了餐厅的<b>价格</b>?
+                            </label>
+                        </div>
 
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" value="" id="askScore">
-                        用户<b>这一轮</b>询问了餐厅的<b>评分</b>?
-                    </label>
-                </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" value="" id="askScore">
+                                用户<b>这一轮</b>询问了餐厅的<b>评分</b>?
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <button type="button" class="btn btn-primary" onclick="searchDB()">完成第一步</button>
@@ -264,110 +268,174 @@
 
     <div class="panel panel-default">
         <div class="panel-body">
-    <form>
-        <div class="form-group">
-            <label for="wizardResponse"><h4>第二步： 根据对话历史和搜索结果，您的回答是:</h4></label>
-            <textarea class="form-control" id="wizardResponse" rows="3"></textarea>
-            <small id="foodTypeHelp" class="form-text text-muted">*如果需要用户提供更多信息，只能选择让用户提供<b>区域</b>，<b>价格</b>和<b>评分</b>的喜好.</small>
-        </div>
-        <div class="form-group">
-            <label for="sysAct">请选择系统行为(System Dialogue Act):</label>
-            <select class="form-control" id="sysAct">
-                <option disabled selected value> -- 请选择系统行为 -- </option>
-                <option>hello</option>
-                <option>bye</option>
-                <option>request</option>
-                <option>confirm</option>
-                <option>inform</option>
-                <option>recommend</option>
-                <option>repeat</option>
-                <option>other</option>
-            </select>
-        </div>
-        <div class="form-group col-xs-12" style="padding:0">
-            <h5>系统行为对应的参数(slot):</h5>
-            <div class="col-xs-5" style="padding:0">
-                <select class="form-control sysSlotName" id="sysSlotName0">
-                    <option> -- 请选择信息类型 -- </option>
-                    <option>餐馆区域 area</option>
-                    <option>餐馆评分 score</option>
-                    <option>餐馆名称 name</option>
-                    <option>餐馆价格 price</option>
-                    <option>餐馆地址 address</option>
-                    <option>餐馆菜系 food_type</option>
-                </select>
-            </div>
-            <div class="col-xs-5">
-                <input type="text" class="form-control sysSlotValue" id="sysSlotValue0" aria-describedby="nameHelp" placeholder="如没有对应的值或需要用户提供此信息,则此处留空">
-            </div>
-            <div class="col-xs-12">
-            </div>
-            <div class="col-xs-5" style="padding:0">
-                <select class="form-control sysSlotName" id="sysSlotName1">
-                    <option> -- 请选择信息类型 -- </option>
-                    <option>餐馆区域 area</option>
-                    <option>餐馆评分 score</option>
-                    <option>餐馆名称 name</option>
-                    <option>餐馆价格 price</option>
-                    <option>餐馆地址 address</option>
-                    <option>餐馆菜系 food_type</option>
-                </select>
-            </div>
-            <div class="col-xs-5">
-                <input type="text" class="form-control sysSlotValue" id="sysSlotValue1" aria-describedby="nameHelp" placeholder="如没有对应的值或需要用户提供此信息,则此处留空">
-            </div>
-            <div class="col-xs-5" style="padding:0">
-                <select class="form-control sysSlotName" id="sysSlotName2">
-                    <option> -- 请选择信息类型 -- </option>
-                    <option>餐馆区域 area</option>
-                    <option>餐馆评分 score</option>
-                    <option>餐馆名称 name</option>
-                    <option>餐馆价格 price</option>
-                    <option>餐馆地址 address</option>
-                    <option>餐馆菜系 food_type</option>
-                </select>
-            </div>
-            <div class="col-xs-5">
-                <input type="text" class="form-control sysSlotValue" id="sysSlotValue2" aria-describedby="nameHelp" placeholder="如没有对应的值或需要用户提供此信息,则此处留空">
-            </div>
-            <div class="col-xs-5" style="padding:0">
-                <select class="form-control sysSlotName" id="sysSlotName3">
-                    <option> -- 请选择信息类型 -- </option>
-                    <option>餐馆区域 area</option>
-                    <option>餐馆评分 score</option>
-                    <option>餐馆名称 name</option>
-                    <option>餐馆价格 price</option>
-                    <option>餐馆地址 address</option>
-                    <option>餐馆菜系 food_type</option>
-                </select>
-            </div>
-            <div class="col-xs-5">
-                <input type="text" class="form-control sysSlotValue" id="sysSlotValue3" aria-describedby="nameHelp" placeholder="如没有对应的值或需要用户提供此信息,则此处留空">
-            </div>
-            <div class="col-xs-5" style="padding:0">
-                <select class="form-control sysSlotName" id="sysSlotName4">
-                    <option> -- 请选择信息类型 -- </option>
-                    <option>餐馆区域 area</option>
-                    <option>餐馆评分 score</option>
-                    <option>餐馆名称 name</option>
-                    <option>餐馆价格 price</option>
-                    <option>餐馆地址 address</option>
-                    <option>餐馆菜系 food_type</option>
-                </select>
-            </div>
-            <div class="col-xs-5">
-                <input type="text" class="form-control sysSlotValue" id="sysSlotValue4" aria-describedby="nameHelp" placeholder="如没有对应的值或需要用户提供此信息,则此处留空">
-            </div>
-        </div>
+            <form>
+                <div class="form-group">
+                    <label for="wizardResponse"><h4>第二步： 根据对话历史和搜索结果，您的回答是:</h4></label>
+                    <textarea class="form-control" id="wizardResponse" rows="3"></textarea>
+                    <small id="foodTypeHelp" class="form-text text-muted">*如果需要用户提供更多信息，只能选择让用户提供<b>区域</b>，<b>价格</b>和<b>评分</b>的喜好.
+                    </small>
+                </div>
+                <!--<div class="form-group">
+                    <label for="sysAct">请选择系统行为(System Dialogue Act):</label>
+                    <select class="form-control" id="sysAct">
+                        <option disabled selected value> -- 请选择系统行为 --</option>
+                        <option>通知/inform (麦当劳的地址是..)</option>
+                        <option>推荐/recommend (为您找到麦当劳..)</option>
+                        <option>需求/request (您想吃啥)</option>
+                        <option>建议/suggest (你想吃川菜吗)</option>
+                        <option>无结果/no_result (没有找到符合要求的餐馆)</option>
+                        <option>肯定/affirm (是的)</option>
+                        <option>确认/confirm (您是要吃川菜吗)</option>
+                        <option>否认/negate (不是)</option>
+                        <option>再见/goodbye (再见)</option>
+                        <option>更改需求/request_alts (您可以吃点别的吗)</option>
+                    </select>
+                </div>
+                <div class="form-group col-xs-12" style="padding:0">
+                    <h5>系统行为对应的参数(slot):</h5>
+                    <!--
+                    <div class="col-xs-5" style="padding:0">
+                        <select class="form-control sysSlotName" id="sysSlotName0">
+                            <option> -- 请选择信息类型 -- </option>
+                            <option>餐馆区域 area</option>
+                            <option>餐馆评分 score</option>
+                            <option>餐馆名称 name</option>
+                            <option>餐馆价格 price</option>
+                            <option>餐馆地址 address</option>
+                            <option>餐馆菜系 food_type</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-5">
+                        <input type="text" class="form-control sysSlotValue" id="sysSlotValue0" aria-describedby="nameHelp" placeholder="如没有对应的值或需要用户提供此信息,则此处留空">
+                    </div>
+                    <div class="col-xs-12">
+                    </div>
+                    <div class="col-xs-5" style="padding:0">
+                        <select class="form-control sysSlotName" id="sysSlotName1">
+                            <option> -- 请选择信息类型 -- </option>
+                            <option>餐馆区域 area</option>
+                            <option>餐馆评分 score</option>
+                            <option>餐馆名称 name</option>
+                            <option>餐馆价格 price</option>
+                            <option>餐馆地址 address</option>
+                            <option>餐馆菜系 food_type</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-5">
+                        <input type="text" class="form-control sysSlotValue" id="sysSlotValue1" aria-describedby="nameHelp" placeholder="如没有对应的值或需要用户提供此信息,则此处留空">
+                    </div>
+                    <div class="col-xs-5" style="padding:0">
+                        <select class="form-control sysSlotName" id="sysSlotName2">
+                            <option> -- 请选择信息类型 -- </option>
+                            <option>餐馆区域 area</option>
+                            <option>餐馆评分 score</option>
+                            <option>餐馆名称 name</option>
+                            <option>餐馆价格 price</option>
+                            <option>餐馆地址 address</option>
+                            <option>餐馆菜系 food_type</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-5">
+                        <input type="text" class="form-control sysSlotValue" id="sysSlotValue2" aria-describedby="nameHelp" placeholder="如没有对应的值或需要用户提供此信息,则此处留空">
+                    </div>
+                    <div class="col-xs-5" style="padding:0">
+                        <select class="form-control sysSlotName" id="sysSlotName3">
+                            <option> -- 请选择信息类型 -- </option>
+                            <option>餐馆区域 area</option>
+                            <option>餐馆评分 score</option>
+                            <option>餐馆名称 name</option>
+                            <option>餐馆价格 price</option>
+                            <option>餐馆地址 address</option>
+                            <option>餐馆菜系 food_type</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-5">
+                        <input type="text" class="form-control sysSlotValue" id="sysSlotValue3" aria-describedby="nameHelp" placeholder="如没有对应的值或需要用户提供此信息,则此处留空">
+                    </div>
+                    <div class="col-xs-5" style="padding:0">
+                        <select class="form-control sysSlotName" id="sysSlotName4">
+                            <option> -- 请选择信息类型 -- </option>
+                            <option>餐馆区域 area</option>
+                            <option>餐馆评分 score</option>
+                            <option>餐馆名称 name</option>
+                            <option>餐馆价格 price</option>
+                            <option>餐馆地址 address</option>
+                            <option>餐馆菜系 food_type</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-5">
+                        <input type="text" class="form-control sysSlotValue" id="sysSlotValue4" aria-describedby="nameHelp" placeholder="如没有对应的值或需要用户提供此信息,则此处留空">
+                    </div>
+                </div>
+                ##
+                    <form class="form-inline">
+                        <div class="fvrduplicate">
+                            <div class="col-xs-5" style="padding:0">
+                                <select class="form-control sysSlotName" name="name[][name]">
+                                    <option> -- 请选择信息类型 --</option>
+                                    <option>餐馆区域 area</option>
+                                    <option>餐馆评分 score</option>
+                                    <option>餐馆名称 name</option>
+                                    <option>餐馆价格 price</option>
+                                    <option>餐馆地址 address</option>
+                                    <option>餐馆菜系 food_type</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control sysSlotValue"
+                                       name="diaact[][value]" placeholder="如没有对应的值或需要用户提供此信息,则此处留空">
+                            </div>
+                        </div>
+                    </form>
+                -->
 
-        <div class="form-check col-xs-12" style="padding:0">
-            <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" value="" id="endOfDialogue">
-                结束回话?
-            </label>
-        </div>
-        <button type="submit" id="wizardSubmit" class="btn btn-primary" onclick="submitWizardResponse()">完成第二步</button>
-    </form>
+                <div class="diaact">
+                    <div class="form-group form-inline dup" id="diaact-0">
+                        <select class="form-control" id="sysAct">
+                            <option disabled selected value> -- 请选择系统行为 --</option>
+                            <option>通知/inform (麦当劳的地址是..)</option>
+                            <option>推荐/recommend (为您找到麦当劳..)</option>
+                            <option>需求/request (您想吃啥)</option>
+                            <option>建议/suggest (你想吃川菜吗)</option>
+                            <option>无结果/no_result (没有找到符合要求的餐馆)</option>
+                            <option>肯定/affirm (是的)</option>
+                            <option>确认/confirm (您是要吃川菜吗)</option>
+                            <option>否认/negate (不是)</option>
+                            <option>再见/goodbye (再见)</option>
+                            <option>更改需求/request_alts (您可以吃点别的吗)</option>
+                        </select>
+                        <form class="form-inline">
+                            <div class="fvrduplicate">
+                                <select class="form-control sysSlotName">
+                                    <option> -- 请选择语义槽类型 --</option>
+                                    <option>餐馆区域 area</option>
+                                    <option>餐馆评分 score</option>
+                                    <option>餐馆名称 name</option>
+                                    <option>餐馆价格 price</option>
+                                    <option>餐馆地址 address</option>
+                                    <option>餐馆菜系 food_type</option>
+                                </select>
+                                <input type="text" class="form-control sysSlotValue"
+                                placeholder="如没有对应的值或需要用户提供此信息,则此处留空">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <input type='button' value='添加系统行为' id='AddDiaact'>
+                <input type='button' value='删除系统行为' id='RemoveDiaact'>
+
+                <div class="form-check col-xs-12" style="padding:0">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" value="" id="endOfDialogue">
+                        结束会话?
+                    </label>
+                </div>
+                <div class="form-check col-xs-12" style="padding:0">
+                    <button type="submit" id="wizardSubmit" class="btn btn-primary" onclick="submitWizardResponse()">
+                        完成第二步
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
     <div>

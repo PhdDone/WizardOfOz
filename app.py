@@ -83,14 +83,28 @@ def newTask():
         return redirect(url_for('login'))
     app.logger.info("User %s is assigned with new random task", user_name)
 
-    if dbutil.haveWizardTask() and random.uniform(0, 1) > 0.3:
-        return newWizardTask()
+    sample = random.uniform(0, 1)
+    app.logger.info("have user task: %s, have wizard task: %s, sample prob: %.2f", dbutil.haveUserTask(), dbutil.haveWizardTask(), sample)
+    if (dbutil.haveUserTask() or dbutil.haveWizardTask()) and sample >= 0.1:
+        if dbutil.haveWizardTask():
+            return newWizardTask()
+        else:
+            return newUserTask(None)
     else:
-        if dbutil.haveUserTask():
-            return newUserTask()
-    if dbutil.haveWizardTask():
-        return newUserTask()
-    return render_template("noTask.html")
+        #try to open new task
+        task = dbutil.taskdb.find_and_modify( { dbutil.STATUS : dbutil.NT },
+                                              {"$set": { dbutil.STATUS: dbutil.UT}})
+        if task is None:
+            if dbutil.haveWizardTask():
+                return newWizardTask()
+            else:
+                if dbutil.haveUserTask():
+                    return newUserTask(None)
+                else:
+                    return render_template("noTask.html")
+        else:
+            app.logger.info("Open new Task %s", task[dbutil.TASK_ID])
+            return newUserTask(task)
 
 @app.route('/')
 def hello():
@@ -127,17 +141,18 @@ def show_all():
     return json.dumps(list(dbutil.taskdb.find({},{'_id': False})))
 
 @app.route('/newUserTask')
-def newUserTask():
+def newUserTask(task):
     user_name = request.cookies.get('UserName')
 
     if not user_name:
         return redirect(url_for('login'))
     app.logger.info("User %s is assigned with a new user HIT", user_name)
     #get one task
-    task = dbutil.taskdb.find_and_modify(
-        { dbutil.STATUS : dbutil.UT },
-        {"$set": { dbutil.STATUS: dbutil.WU}},
-    )
+    if task is None:
+        task = dbutil.taskdb.find_and_modify(
+            { dbutil.STATUS : dbutil.UT },
+            {"$set": { dbutil.STATUS: dbutil.WU}},
+        )
     #print task
     #task = mongo.db.tasks.find_one({dbutil.STATUS: dbutil.UT})
     #print task
